@@ -8,8 +8,19 @@ $user = NULL; //Add new user
 $_id = NULL;
 
 if (!empty($_GET['id'])) {
-    $_id = $_GET['id'];
-    $user = $userModel->findUserById($_id);//Update existing user
+    $id = $_GET['id'];
+    $start = substr($id, 0, 5);
+
+    //Get last number
+    $end = substr($id, -5);
+
+    //Replace first number with null
+    $id = str_replace($start, "", $id);
+
+    //Replace last number with null
+    $id = str_replace($end, "", $id);
+    // var_dump($id); die;
+    $user = $userModel->findUserById($id);//Update existing user
 }
 
 
@@ -58,7 +69,7 @@ if (!empty($_POST['submit'])) {
                             <option value="">--Select Type--</option>
                             <option value="admin">admin</option>
                             <option value="user">user</option>
-                            <option value="user">Guest</option>
+                            <option value="guest">Guest</option>
                         </select>
                     </div>
                     <div class="form-group">
