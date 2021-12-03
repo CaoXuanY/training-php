@@ -18,15 +18,15 @@ if (!empty($_GET['id'])) {
     $id = str_replace($start, "", $id);
 
     //Replace last number with null
-    $id = str_replace($end, "", $id);
-    // var_dump($id); die;
-    $user = $userModel->findUserById($id);//Update existing user
+    $newid = str_replace($end, "", $id);
+    // var_dump($newid); die;
+    $user = $userModel->findUserById($newid);//Update existing user
 }
 
 
 if (!empty($_POST['submit'])) {
-
-    if (!empty($_id)) {
+    // var_dump($_id);die();
+    if (!empty($newid)) {
         $userModel->updateUser($_POST);
     } else {
         $userModel->insertUser($_POST);
@@ -45,12 +45,13 @@ if (!empty($_POST['submit'])) {
     <?php include 'views/header.php'?>
     <div class="container">
 
-            <?php if ($user || !isset($_id)) { ?>
+            <?php if ($user || !isset($newid)) { ?>
                 <div class="alert alert-warning" role="alert">
                     User form
                 </div>
                 <form method="POST">
-                    <input type="hidden" name="id" value="<?php echo $_id ?>">
+                    <input type="hidden" name="id" value="<?php if(!empty($newid)){echo $newid;}else{echo $_id;} ?>">
+
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input class="form-control" name="name" placeholder="Name" value='<?php if (!empty($user[0]['name'])) echo $user[0]['name'] ?>'>
@@ -64,12 +65,11 @@ if (!empty($_POST['submit'])) {
                         <input class="form-control" name="email" placeholder="Email" value="<?php if (!empty($user[0]['email'])) echo $user[0]['email'] ?>">
                     </div>
                     <div class="form-group">
-                        <label for="name">Type</label>
-                        <select name="type">
-                            <option value="">--Select Type--</option>
-                            <option value="admin">admin</option>
-                            <option value="user">user</option>
-                            <option value="guest">Guest</option>
+                        <label for="type">Type</label>
+                        <select class="form-control" name="type" value="1" placeholder="Type">
+                            <option value="admin" <?php if (!empty($user[0]['type'])&&$user[0]['type'] =='admin') echo "selected=\"selected\""; ?>>Admin</option>
+                            <option value="user" <?php if (!empty($user[0]['type'])&&$user[0]['type'] =='user') echo "selected=\"selected\"";?> >User</option>
+                            <option value="guest" <?php if (!empty($user[0]['type'])&& $user[0]['type']=='guest') echo "selected=\"selected\"";?>>Guest</option>
                         </select>
                     </div>
                     <div class="form-group">
