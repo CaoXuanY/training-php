@@ -22,7 +22,7 @@ class UserModel extends BaseModel {
         $md5Password = $password;
         $sql = 'SELECT * FROM users WHERE name = "' . $userName . '" AND password = "'.$md5Password.'"';
 
-        $user = $this->select($sql);
+    $user = $this->select($sql);
         return $user;
     }
 
@@ -33,8 +33,8 @@ class UserModel extends BaseModel {
      */
     public function deleteUserById($id) {
         $sql = 'DELETE FROM users WHERE id = '.$id;
+        // var_dump($sql);die();
         return $this->delete($sql);
-
     }
 
     /**

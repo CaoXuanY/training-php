@@ -57,7 +57,9 @@ $users = $userModel->getUsers($params);
                                     <i class="fa fa-eye" aria-hidden="true" title="View"></i>
                                 </a>
                                 <a href="delete_user.php?id=<?php echo $user['id'] ?>&token=<?php echo $token?>">
-                                <?php $_SESSION['token'] = $token;?>
+                                <?php $_SESSION['token'] = $token;
+                               //var_dump($token);
+                               ?>
 
                                     <i class="fa fa-eraser" aria-hidden="true" title="Delete"></i>
                                 </a>
