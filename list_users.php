@@ -4,7 +4,7 @@ session_start();
 
 require_once 'models/UserModel.php';
 $userModel = new UserModel();
-
+$token = md5(uniqid());
 $params = [];
 if (!empty($_GET['keyword'])) {
     $params['keyword'] = $_GET['keyword'];
@@ -56,7 +56,9 @@ $users = $userModel->getUsers($params);
                                 <a href="view_user.php?id=<?php echo $user['id'] ?>">
                                     <i class="fa fa-eye" aria-hidden="true" title="View"></i>
                                 </a>
-                                <a href="delete_user.php?id=<?php echo $user['id'] ?>">
+                                <a href="delete_user.php?id=<?php echo $user['id'] ?>&token=<?php echo $token?>">
+                                <?php $_SESSION['token'] = $token;?>
+
                                     <i class="fa fa-eraser" aria-hidden="true" title="Delete"></i>
                                 </a>
                             </td>
