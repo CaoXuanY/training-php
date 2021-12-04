@@ -8,14 +8,25 @@ $user = NULL; //Add new user
 $_id = NULL;
 
 if (!empty($_GET['id'])) {
-    $_id = $_GET['id'];
-    $user = $userModel->findUserById($_id);//Update existing user
+    $id = $_GET['id'];
+    $start = substr($id, 0, 5);
+
+    //Get last number
+    $end = substr($id, -5);
+
+    //Replace first number with null
+    $id = str_replace($start, "", $id);
+
+    //Replace last number with null
+    $newid = str_replace($end, "", $id);
+    // var_dump($newid); die;
+    $user = $userModel->findUserById($newid);//Update existing user
 }
 
 
 if (!empty($_POST['submit'])) {
-
-    if (!empty($_id)) {
+     //var_dump($newid);die();
+    if (!empty($newid)) {
         $userModel->updateUser($_POST);
     } else {
         $userModel->insertUser($_POST);
@@ -39,7 +50,7 @@ if (!empty($_POST['submit'])) {
                     User form
                 </div>
                 <form method="POST">
-                    <input type="hidden" name="id" value="<?php echo $_id ?>">
+                <input type="hidden" name="id" value="<?php if(!empty($newid)){echo $newid;}else{echo $_id;} ?>">
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input class="form-control" name="name" placeholder="Name" value='<?php if (!empty($user[0]['name'])) echo $user[0]['name'] ?>'>
