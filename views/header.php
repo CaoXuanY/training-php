@@ -6,7 +6,10 @@ if(!empty($_SESSION['id'])) {
 
 $keyword = '';
 if(!empty($_GET['keyword'])) {
-    $keyword = $_GET['keyword'];
+
+    // $keyword = $_GET['keyword'];
+    $keyword = isset($_GET['keyword'])?(string)(int)$_GET['keyword']:false;
+    $keyword = str_replace('/[^0-9]/', '', $keyword);
 }
 ?>
 <div class="container">
