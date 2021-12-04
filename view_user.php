@@ -7,7 +7,7 @@ $id = NULL;
 
 if (!empty($_GET['id'])) {
     $id = $_GET['id'];
-    var_dump($id);
+    // var_dump($id);
     //Get first number
     $start = substr($id, 0, 5);
 
