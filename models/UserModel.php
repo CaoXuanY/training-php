@@ -78,12 +78,11 @@ class UserModel extends BaseModel {
         //Keyword
         if (!empty($params['keyword'])) {
             $sql = 'SELECT * FROM users WHERE name LIKE "%' . $params['keyword'] .'%"';
+            // var_dump($sql);die();
         } else {
             $sql = 'SELECT * FROM users';
         }
-
         $users = $this->select($sql);
-
         return $users;
     }
 }
