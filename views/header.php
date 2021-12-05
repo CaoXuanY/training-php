@@ -6,8 +6,13 @@ if(!empty($_SESSION['id'])) {
 
 $keyword = '';
 if(!empty($_GET['keyword'])) {
-    $keyword = $_GET['keyword'];
+
+    // $keyword = $_GET['keyword'];
+    $keyword = isset($_GET['keyword'])?(string)(int)$_GET['keyword']:false;
+    $keyword = str_replace('/[^0-9]/', '', $keyword);
+    
 }
+
 ?>
 <div class="container">
     <nav class="navbar navbar-icon-top navbar-default">
@@ -31,8 +36,8 @@ if(!empty($_GET['keyword'])) {
                 <form class="navbar-form navbar-left">
                     <div class="form-group">
                         <input type="text" name="keyword" class="form-control" placeholder="Search users"
-                               value="<?php echo $keyword ?>"
-                        >
+                               value="<?php echo $keyword ?>">
+
                     </div>
                     <button type="submit" class="btn btn-default">Search</button>
                 </form>

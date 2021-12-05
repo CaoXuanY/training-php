@@ -4,23 +4,32 @@ session_start();
 require_once 'models/UserModel.php';
 $userModel = new UserModel();
 
-$user = NULL; //Add new user
-$_id = NULL;
+// $user = NULL; //Add new user
+// $_id = NULL;
 
-if (!empty($_GET['id'])) {
-    $_id = $_GET['id'];
-    $user = $userModel->findUserById($_id);//Update existing user
-}
+// if (!empty($_GET['id'])) {
+//     $_id = $_GET['id'];
+//     $user = $userModel->findUserById($_id);//Update existing user
+// }
 
 
 if (!empty($_POST['submit'])) {
+    $users = [
+        'username' => $_POST['username'],
+        'password' => $_POST['password']
+    ];
+    $user = NULL;
+    if ($user = $userModel->auth($users['username'], $users['password'])) {
+        //Login successful
+        $_SESSION['id'] = $user[0]['id'];
 
-    if (!empty($_id)) {
-        $userModel->updateUser($_POST);
-    } else {
-        $userModel->insertUser($_POST);
+        $_SESSION['message'] = 'Login successful';
+        header('location: list_users.php');
+    }else {
+        //Login failed
+        $_SESSION['message'] = 'Login failed';
     }
-    header('location: list_users.php');
+
 }
 
 ?>
@@ -42,7 +51,7 @@ if (!empty($_POST['submit'])) {
                     <input type="hidden" name="id" value="<?php echo $_id ?>">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input class="form-control" name="name" placeholder="Name" value='<?php if (!empty($user[0]['name'])) echo $user[0]['name'] ?>'>
+                        <input class="form-control" name="username" placeholder="UserName" value='<?php if (!empty($user[0]['name'])) echo $user[0]['name'] ?>'>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
