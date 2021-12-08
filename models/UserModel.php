@@ -86,4 +86,19 @@ class UserModel extends BaseModel {
 
         return $users;
     }
+    public static function getInstance() {
+        if (self::$_instance !== null){
+            return self::$_instance;
+        }
+        self::$_instance = new self();
+         if (!empty(self::$code) && (self::$code == 400)){
+            return 400;
+        }
+        return self::$_instance;
+    }
+    public function getID(){
+        $sql = "SELECT id FROM `users` ORDER BY id DESC LIMIT 1";
+        $user = $this->select($sql);
+        return $user;
+    }
 }

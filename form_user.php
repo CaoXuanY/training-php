@@ -1,8 +1,15 @@
 <?php
 // Start the session
 session_start();
-require_once 'models/UserModel.php';
-$userModel = new UserModel();
+// require_once 'models/UserModel.php';
+// require_once 'models/Repository.php';
+// $userModel = new UserModel();
+// $repository = new Repository();
+require_once 'models/FactoryPattern.php';
+$factory = new FactoryPattern();
+$userRepository = $factory->make('repository');
+
+$userModel = $factory->make('user');
 
 $user = NULL; //Add new user
 $_id = NULL;
@@ -29,7 +36,7 @@ if (!empty($_POST['submit'])) {
     if (!empty($newid)) {
         $userModel->updateUser($_POST);
     } else {
-        $userModel->insertUser($_POST);
+        $userRepository->createUser($_POST);
     }
     header('location: list_users.php');
 }
