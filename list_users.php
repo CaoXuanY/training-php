@@ -1,17 +1,17 @@
 <?php
 // Start the session
 session_start();
+//1-b
+require_once 'models/FactoryPattern.php';
+$factory = new FactoryPattern();
 
-require_once 'models/UserModel.php';
-$userModel = new UserModel();
+$userModel = $factory->make('user');
 
 $params = [];
 if (!empty($_GET['keyword'])) {
     $params['keyword'] = $_GET['keyword'];
 }
-$token = md5(uniqid());
-// var_dump($token);
-
+//feature 1-a
 $users = $userModel->getUsers($params);
 ?>
 <!DOCTYPE html>
@@ -41,9 +41,9 @@ $users = $userModel->getUsers($params);
                 <tbody>
                     <?php foreach ($users as $user) {?>
                         <tr>
-                            <th scope="row"><?php echo htmlentities($user['id'])?></th>
+                            <th scope="row"><?php echo $user['id']?></th>
                             <td>
-                                <?php echo htmlentities($user['name'])?>
+                                <?php echo $user['name']?>
                             </td>
                             <td>
                                 <?php echo $user['fullname']?>
@@ -52,14 +52,13 @@ $users = $userModel->getUsers($params);
                                 <?php echo $user['type']?>
                             </td>
                             <td>
-                                <a href="form_user.php?id=<?php echo rand(10000, 99999) . $user['id'] . rand(10000, 99999) ?>">
+                                <a href="form_user.php?id=<?php echo $user['id'] ?>">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true" title="Update"></i>
                                 </a>
-                                <a href="view_user.php?id=<?php echo rand(10000, 99999) . $user['id'] . rand(10000, 99999) ?>">
+                                <a href="view_user.php?id=<?php echo $user['id'] ?>">
                                     <i class="fa fa-eye" aria-hidden="true" title="View"></i>
                                 </a>
-                                <a href="delete_user.php?id=<?php echo rand(10000, 99999) . $user['id'] . rand(10000, 99999) ?>&token=<?php echo $token?>">
-                                <?php $_SESSION['token'] = $token; ?>
+                                <a href="delete_user.php?id=<?php echo $user['id'] ?>">
                                     <i class="fa fa-eraser" aria-hidden="true" title="Delete"></i>
                                 </a>
                             </td>

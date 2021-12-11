@@ -7,19 +7,6 @@ $id = NULL;
 
 if (!empty($_GET['id'])) {
     $id = $_GET['id'];
-    // var_dump($id);
-    //Get first number
-    $start = substr($id, 0, 5);
-
-    //Get last number
-    $end = substr($id, -5);
-
-    //Replace first number with null
-    $id = str_replace($start, "", $id);
-
-    //Replace last number with null
-    $id = str_replace($end, "", $id);
-    // var_dump($id); die;
     $user = $userModel->findUserById($id);//Update existing user
 }
 
@@ -62,14 +49,6 @@ if (!empty($_POST['submit'])) {
             <div class="form-group">
                 <label for="password">Email</label>
                 <span><?php if (!empty($user[0]['name'])) echo $user[0]['email'] ?></span>
-            </div>
-            <div class="form-group">
-                <label for="type">Type</label>
-                <span><?php if (!empty($user[0]['type'])) echo $user[0]['type'] ?></span>
-            </div>
-            <div class="form-group">
-                <label for="type">Password</label>
-                <span><?php if (!empty($user[0]['password'])) echo md5($user[0]['password']) ?></span>
             </div>
         </form>
     <?php } else { ?>
