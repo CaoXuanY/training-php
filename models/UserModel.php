@@ -5,11 +5,16 @@ require_once 'BaseModel.php';
 class UserModel extends BaseModel {
 
     public function findUserById($id) {
-        $sql = 'SELECT * FROM users WHERE id = '.$id;
-        $user = $this->select($sql);
+        if(is_int($id) && $id != null && $id > 0 && !is_object($id)){
+             $sql = 'SELECT * FROM users WHERE id = '.$id;
+            $user = $this->select($sql);
+            return $user;
+        }else{
+            return false;
+        }
 
-        return $user;
     }
+
 
     public function findUser($keyword) {
         $sql = 'SELECT * FROM users WHERE user_name LIKE %'.$keyword.'%'. ' OR user_email LIKE %'.$keyword.'%';
@@ -25,6 +30,7 @@ class UserModel extends BaseModel {
         $user = $this->select($sql);
         return $user;
     }
+    
 
     /**
      * Delete user by id
@@ -100,5 +106,12 @@ class UserModel extends BaseModel {
         $sql = "SELECT id FROM `users` ORDER BY id DESC LIMIT 1";
         $user = $this->select($sql);
         return $user;
+    }
+    /**For testing
+     * @param $a
+     * @param $b
+     */
+    public function sumb($a, $b){
+        return $a + $b;
     }
 }
