@@ -12,16 +12,21 @@ class UserModel extends BaseModel {
         }else{
             return false;
         }
-
+       
     }
-
 
     public function findUser($keyword) {
-        $sql = 'SELECT * FROM users WHERE user_name LIKE %'.$keyword.'%'. ' OR user_email LIKE %'.$keyword.'%';
+        if(is_string($keyword)&& $keyword != null){
+        //   var_dump(is_string($keyword));die();
+        $sql = "SELECT * FROM users WHERE name LIKE '".$keyword. "'" . " OR email LIKE " .$keyword;
         $user = $this->select($sql);
+        //var_dump( $sql);die();
 
         return $user;
+    }else{
+        return false;
     }
+}
 
     public function auth($userName, $password) {
         $md5Password = $password;
@@ -30,7 +35,6 @@ class UserModel extends BaseModel {
         $user = $this->select($sql);
         return $user;
     }
-    
 
     /**
      * Delete user by id
@@ -38,8 +42,13 @@ class UserModel extends BaseModel {
      * @return mixed
      */
     public function deleteUserById($id) {
-        $sql = 'DELETE FROM users WHERE id = '.$id;
-        return $this->delete($sql);
+        if(!is_null($id) && $id > 0 &&
+            !is_array($id) && !is_bool($id) && !is_string($id)){
+            $sql = 'DELETE FROM users WHERE id = '.$id;
+            return $this->delete($sql);
+        }else{
+            return false;
+        }
 
     }
 
@@ -49,16 +58,25 @@ class UserModel extends BaseModel {
      * @return mixed
      */
     public function updateUser($input) {
-        $sql = 'UPDATE users SET
-                 name = "' . $input['name'] .'",
+        if(!is_null($input["name"]) &&
+        !is_int($input["name"]) &&
+        !is_bool($input["name"]) &&
+        !is_array($input["name"]) &&
+        !is_object($input["name"])){
+             $sql = 'UPDATE users SET 
+                 name = "' . $input['name'] .'", 
                  fullname = "' . $input['fullname'] .'",
                  email = "' . $input['email'] .'",
                  type = "' . $input['type'] .'",
                  password="'. md5($input['password']) .'"
                 WHERE id = ' . $input['id'];
         $user = $this->update($sql);
-        // var_dump($sql);die();
+
         return $user;
+        }else{
+            return false;
+        }
+       
     }
 
     /**
@@ -67,12 +85,20 @@ class UserModel extends BaseModel {
      * @return mixed
      */
     public function insertUser($input) {
-        $sql = "INSERT INTO `app_web1`.`users` (`name`, `fullname`, `email`, `type`, `password`) VALUES (" .
-                "'" . $input['name'] . "', '".$input['fullname']."', '".$input['email']."', '".$input['type']."', '".$input['password']."')";
+        if(!is_null($input["name"]) &&
+        !is_int($input["name"]) &&
+        !is_bool($input["name"]) &&
+        !is_array($input["name"]) &&
+        !is_object($input["name"])){       
+            $sql = "INSERT INTO `app_web1`.`users` (`name`, `fullname`, `email`, `type`, `password`) VALUES (" .
+                    "'" . $input['name'] . "', '".$input['fullname']."', '".$input['email']."', '".$input['type']."', '".$input['password']."')";
 
-        $user = $this->insert($sql);
+            $user = $this->insert($sql);
 
-        return $user;
+            return $user;
+        }else{
+            return false;
+        }
     }
 
     /**
@@ -92,26 +118,7 @@ class UserModel extends BaseModel {
 
         return $users;
     }
-    public static function getInstance() {
-        if (self::$_instance !== null){
-            return self::$_instance;
-        }
-        self::$_instance = new self();
-         if (!empty(self::$code) && (self::$code == 400)){
-            return 400;
-        }
-        return self::$_instance;
-    }
-    public function getID(){
-        $sql = "SELECT id FROM `users` ORDER BY id DESC LIMIT 1";
-        $user = $this->select($sql);
-        return $user;
-    }
-    /**For testing
-     * @param $a
-     * @param $b
-     */
-    public function sumb($a, $b){
+    public function sumb($a , $b){
         return $a + $b;
     }
 }
